@@ -57,13 +57,12 @@ Para montar e operar o data logger industrial, siga as instruções abaixo:
    - Conecte o RTC de acordo com as especificações do fabricante.
 
 2. **Configuração:**
-   - Certifique-se de calibrar os sensores corretamente, se necessário.
    - Ajuste os limites de temperatura, luminosidade e umidade conforme necessário no código fonte.
    - Certifique-se de configurar corretamente o RTC para garantir a precisão do registro de data e hora.
 
 3. **Operação:**
    - Ligue o dispositivo.
    - O data logger começará a monitorar os sensores.
-   - Se valores anormais forem detectados, o buzzer emitirá um som e o LED acenderá.
+   - Se valores anormais forem detectados, o buzzer emitirá um som e o LED acenderá de acordo com a anormalia detectada.
    - As ocorrências serão registradas na EEPROM junto com a data e hora.
 
