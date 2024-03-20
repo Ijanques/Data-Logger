@@ -6,13 +6,13 @@ Este é um projeto de data logger industrial desenvolvido para monitorar e regis
 
 ### Componentes Utilizados:
 - Arduino Uno R3
-- Sensor de Temperatura
-- DHT-11 sensor de umidade capacitivo e sensor de temperatura
+- DHT-11 sensor de umidade capacitivo (+-5%) e sensor de temperatura (+-2°C)
 - Buzzer
 - LED RGB
 - EEPROM
 - RTC (Real Time Clock)
 - Bateria de 9V (Backup de Alimentação)
+- Resistores 220Ohms
 
 ### Faixas de Valores:
 - Temperatura: 15 °C < t < 25 °C
@@ -52,7 +52,7 @@ Para montar e operar o data logger industrial, siga as instruções abaixo:
 
 1. **Montagem:**
    - Conecte os sensores de temperatura, luminosidade e umidade aos pinos correspondentes do Arduino. Conforme indicado no projeto thinkercad em anexo
-   - Conecte o buzzer e o LED aos pinos adequados do Arduino.Conforme indicado no projeto thinkercad em anexo
+   - Conecte o buzzer e o LED RGB aos pinos adequados do Arduino.Conforme indicado no projeto thinkercad em anexo
    - Certifique-se de alimentar o Arduino adequadamente.
    - Conecte o RTC de acordo com as especificações do fabricante.
 
