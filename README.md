@@ -26,13 +26,13 @@ O data logger industrial realiza as seguintes funções:
 1. **Monitoramento de Sensores:** Os sensores de temperatura, luminosidade e umidade são monitorados a cada 6.4 segundos pelo dispositivo.
 
 2. **Detecção de Anormalidades:** Se os valores de temperatura, umidade e luminosidade detectados estiverem fora das faixas especificadas, o dispositivo aciona um sinal de alerta sonoro e visual. O LED RGB emitira cores de acordo com a(s) anormalias detectadas:
-   -Azul: Umidade anormal
-   -Verde: Luminosidade anormal
-   -Vermelho: Temperatra anormal
-   -Rosa: Temperatura e Umidade anormais
-   -Amarelo: Luminosidade e Umidade Anormais
-   -Laranja: Temperatura e Luminosidade Anormais
-   -Branca: Todas as variáveis anormais
+   - Azul: Umidade anormal
+   - Verde: Luminosidade anormal
+   - Vermelho: Temperatra anormal
+   - Rosa: Temperatura e Umidade anormais
+   - Amarelo: Luminosidade e Umidade anormais
+   - Laranja: Temperatura e Luminosidade anormais
+   - Branca: Todas as variáveis anormais
 
 4. **Registro de Ocorrências:** As ocorrências anormais são registradas na EEPROM do Arduino, juntamente com a data e hora em que ocorreram.
 
