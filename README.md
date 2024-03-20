@@ -7,10 +7,9 @@ Este é um projeto de data logger industrial desenvolvido para monitorar e regis
 ### Componentes Utilizados:
 - Arduino Uno R3
 - Sensor de Temperatura
-- Sensor de Luminosidade
-- Sensor de Umidade
+- DHT-11 sensor de umidade capacitivo e sensor de temperatura
 - Buzzer
-- LED
+- LED RGB
 - EEPROM
 - RTC (Real Time Clock)
 - Bateria de 9V (Backup de Alimentação)
@@ -24,17 +23,24 @@ Este é um projeto de data logger industrial desenvolvido para monitorar e regis
 
 O data logger industrial realiza as seguintes funções:
 
-1. **Monitoramento de Sensores:** Os sensores de temperatura, luminosidade e umidade são continuamente monitorados pelo dispositivo.
+1. **Monitoramento de Sensores:** Os sensores de temperatura, luminosidade e umidade são monitorados a cada 6.4 segundos pelo dispositivo.
 
-2. **Detecção de Anormalidades:** Se os valores detectados estiverem fora das faixas especificadas, o dispositivo aciona um sinal de alerta sonoro e visual.
+2. **Detecção de Anormalidades:** Se os valores de temperatura, umidade e luminosidade detectados estiverem fora das faixas especificadas, o dispositivo aciona um sinal de alerta sonoro e visual. O LED RGB emitira cores de acordo com a(s) anormalias detectadas:
+   -Azul: Umidade anormal
+   -Verde: Luminosidade anormal
+   -Vermelho: Temperatra anormal
+   -Rosa: Temperatura e Umidade anormais
+   -Amarelo: Luminosidade e Umidade Anormais
+   -Laranja: Temperatura e Luminosidade Anormais
+   -Branca: Todas as variáveis anormais
 
-3. **Registro de Ocorrências:** As ocorrências anormais são registradas na EEPROM do Arduino, juntamente com a data e hora em que ocorreram.
+4. **Registro de Ocorrências:** As ocorrências anormais são registradas na EEPROM do Arduino, juntamente com a data e hora em que ocorreram.
 
-4. **Backup de Alimentação:** Uma bateria de 9V é utilizada como backup de alimentação para garantir a integridade dos dados em caso de falha na alimentação principal.
+5. **Backup de Alimentação:** Uma bateria de 9V é utilizada como backup de alimentação para garantir a integridade dos dados em caso de falha na alimentação principal.
 
-5. **Registro de Data e Hora:** Um RTC (Real Time Clock) é utilizado para registrar a data e hora precisas de cada ocorrência.
+6. **Registro de Data e Hora:** Um RTC (Real Time Clock) é utilizado para registrar a data e hora precisas de cada ocorrência.
 
-6. **Visualização dos Dados:** Os dados registrados podem ser acessados posteriormente para análise.
+7. **Visualização dos Dados:** Os dados registrados podem ser acessados posteriormente para análise.
 
 ## Diagrama Elétrico
 
