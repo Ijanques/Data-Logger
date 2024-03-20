@@ -44,7 +44,15 @@ O data logger industrial realiza as seguintes funções:
 
 ## Diagrama Elétrico
 
-a implementar
+
+![Untitled Sketch 2_Esquemático](https://github.com/Ijanques/Data-Logger/assets/103215296/b32e39d4-4a4e-4400-9533-efd45297640c)
+
+
+##Montagem do sistema 
+
+
+![Untitled Sketch 2_bb](https://github.com/Ijanques/Data-Logger/assets/103215296/fd5555f0-1718-4b4f-a384-b22c4a442962)
+
 
 ## Manual de Operação
 
@@ -52,7 +60,7 @@ Para montar e operar o data logger industrial, siga as instruções abaixo:
 
 1. **Montagem:**
    - Conecte os sensores de temperatura, luminosidade e umidade aos pinos correspondentes do Arduino. Conforme indicado no projeto thinkercad em anexo
-   - Conecte o buzzer e o LED RGB aos pinos adequados do Arduino.Conforme indicado no projeto thinkercad em anexo
+   - Conecte o buzzer e o LED RGB aos pinos adequados do Arduino Conforme indicado no projeto em anexo
    - Certifique-se de alimentar o Arduino adequadamente.
    - Conecte o RTC de acordo com as especificações do fabricante.
 
