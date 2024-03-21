@@ -1,0 +1,42 @@
+#include <Wire.h> // Inclui a biblioteca Wire para comunicação I2C
+#include "RTClib.h" // Inclui a biblioteca RTClib para trabalhar com o módulo RTC
+#include <LiquidCrystal_I2C.h> // Inclui a biblioteca LiquidCrystal_I2C para o display LCD I2C
+#include <EEPROM.h> // Inclui a biblioteca EEPROM para trabalhar com a memória EEPROM
+#include <dht11.h> // Inclui a biblioteca dht11 para o sensor DHT11
+
+// Definições dos endereços de memória EEPROM
+#define EEPROM_ADDRESS_INTENSIDADE_LUZ 0 // Endereço inicial para a intensidade da luz
+#define EEPROM_ADDRESS_TEMPERATURA 20 // Endereço para a temperatura e umidade
+#define EEPROM_ADDRESS_UMIDADE 40  
+#define EEPROM_ADDRESS_DATA 60
+
+// Variáveis para armazenar os dados lidos da EEPROM
+float luz = 0; // Intensidade da luz
+float temp = 0; // Temperatura
+float umi = 0; // Umidade
+String agora = "11/09/2001"; // Data inicial
+
+void setup() {
+  Serial.begin(9600); // Inicializa a comunicação serial com uma taxa de transmissão de 9600 bps
+}
+
+void loop() {
+  // Lê os dados armazenados na EEPROM
+  EEPROM.get(EEPROM_ADDRESS_INTENSIDADE_LUZ, luz); // Lê a intensidade da luz
+  EEPROM.get(EEPROM_ADDRESS_TEMPERATURA, temp); // Lê a temperatura
+  EEPROM.get(EEPROM_ADDRESS_UMIDADE, umi); // Lê a umidade
+  EEPROM.get(EEPROM_ADDRESS_DATA, agora); // Lê a data
+  
+  // Imprime os dados lidos da EEPROM
+  Serial.println("Dados armazenados na EEPROM:");
+  Serial.print("Data: ");
+  Serial.println(agora);
+  Serial.print("Intensidade de Luz: ");
+  Serial.println(luz);
+  Serial.print("Temperatura: ");
+  Serial.println(temp);
+  Serial.print("Umidade: ");
+  Serial.println(umi);
+
+  delay(3000); // Aguarda 3 segundos antes de ler novamente os dados da EEPROM
+}
