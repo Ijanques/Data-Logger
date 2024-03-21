@@ -1,0 +1,199 @@
+// Incluindo bibliotecas necessárias
+#include <Wire.h>
+#include "RTClib.h"
+#include <LiquidCrystal_I2C.h>
+#include <EEPROM.h> // Para usar a EEPROM
+#include <dht11.h>
+
+// Definição de pinos
+#define DHT11PIN 4
+#define LEDR 3
+#define LEDG 2
+#define LEDB 1
+
+// Definição de caracteres personalizados para o LCD
+byte chave1[] = {
+  B01100,
+  B11000,
+  B11001,
+  B11111,
+  B01110,
+  B00000,
+  B00000,
+  B00000
+};
+
+byte chave2[] = {
+  B00000,
+  B00000,
+  B11111,
+  B11111,
+  B00101,
+  B00101,
+  B00000,
+  B00000
+};
+
+// Variáveis globais
+bool telaInicialExibida = false;
+char daysOfTheWeek[7][12] = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
+int r = 0;
+int g = 0;
+int b = 0;
+int seconds = 0;
+int buzzerPin = 9;
+int ledPin = 10;
+int ValorLDR;
+int IntensidadeLuz;
+float pinoLDR = A0;
+RTC_DS3231 rtc;
+dht11 DHT11;
+
+float luz = 0;
+float temp = 0;
+float umi = 0;
+DateTime agora;
+
+// Inicialização do display LCD
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// Endereços de memória EEPROM
+#define EEPROM_ADDRESS_INTENSIDADE_LUZ 0
+#define EEPROM_ADDRESS_TEMPERATURA 20
+#define EEPROM_ADDRESS_UMIDADE 40  
+#define EEPROM_ADDRESS_DATA 60  
+
+// Função de inicialização
+void setup() {
+  // Inicialização do LCD
+  lcd.init();
+  lcd.backlight();
+
+  // Criação de caracteres personalizados
+  lcd.createChar(0, chave1);
+  lcd.createChar(1, chave2);
+
+  // Configuração dos pinos
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+  pinMode(pinoLDR, INPUT);
+
+  // Inicialização do RTC (Real Time Clock)
+  if (!rtc.begin()) {
+    Serial.println("DS3231 não encontrado");
+    while (1);
+  }
+  if (rtc.lostPower()) {
+    Serial.println("DS3231 OK!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
+  delay(100);
+}
+
+// Função para exibir tela inicial no LCD
+void exibirTelaInicial() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Moon");
+  lcd.setCursor(0, 1);
+  lcd.print("Keys");
+  lcd.write((byte)0); // Exibe o primeiro caractere personalizado
+  lcd.write((byte)1);
+  lcd.write((byte)1); // Exibe o segundo caractere personalizado
+}
+
+// Loop principal
+void loop() {
+  // Verifica se a tela inicial já foi exibida
+  if (!telaInicialExibida) {
+    exibirTelaInicial();
+    telaInicialExibida = true;
+    delay(2000); // Aguarde 2 segundos para exibir a tela inicial
+  }
+
+  // Leitura da intensidade da luz
+  ValorLDR = analogRead(pinoLDR);
+  IntensidadeLuz = map(ValorLDR, 0, 1023, 100, 0);
+
+  // Verifica se os valores lidos estão dentro dos critérios desejados
+  if (IntensidadeLuz > 31 || (float)DHT11.temperature < 15 || ((float)DHT11.temperature) > 25 || ((float)DHT11.humidity) < 30 ||  ((float)DHT11.humidity) > 50 ) {
+    // Ações a serem executadas caso os critérios não sejam atendidos
+    if(DHT11.temperature < 15 || DHT11.temperature > 25){
+      analogWrite(LEDR, 255);
+    }
+    if(IntensidadeLuz> 31){
+      analogWrite(LEDG, 255);
+    }
+    if(DHT11.humidity > 50){
+      analogWrite(LEDB, 255);
+    }
+    
+    digitalWrite(buzzerPin, HIGH);
+    digitalWrite(ledPin, HIGH);
+
+    // Armazenamento dos valores na EEPROM
+    luz = IntensidadeLuz;
+    temp = (float)DHT11.temperature;
+    umi = (float)DHT11.humidity;
+    agora = rtc.now();
+
+    EEPROM.put(EEPROM_ADDRESS_INTENSIDADE_LUZ, luz);
+    EEPROM.put(EEPROM_ADDRESS_TEMPERATURA, temp);
+    EEPROM.put(EEPROM_ADDRESS_UMIDADE, umi);
+    EEPROM.put(EEPROM_ADDRESS_DATA, String(agora.day()) + ':' + String(agora.month()) + ':' + String(agora.year()));
+    
+    Serial.print("Deu ruim");
+    delay(2000);
+  }
+
+  digitalWrite(buzzerPin, LOW);
+  digitalWrite(ledPin, LOW);
+
+  // Exibição da intensidade da luz no LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Light:");
+  lcd.setCursor(2, 1);
+  lcd.print(IntensidadeLuz);
+  delay(2000);
+
+  // Exibição da temperatura e umidade no LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: " + String((float)DHT11.temperature));
+  lcd.setCursor(0, 1);
+  lcd.print("Humid: " + String((float)DHT11.humidity));
+  Serial.println();
+
+  // Leitura de dados do sensor DHT11
+  int chk = DHT11.read(DHT11PIN);
+
+  // Exibição dos valores lidos no Serial Monitor
+  Serial.print("Humidity (%): ");
+  Serial.println(DHT11.humidity, 1);
+  Serial.print("Temperature  (C): ");
+  Serial.println(DHT11.temperature, 1);
+
+  delay(2000);
+
+  // Exibição da intensidade de luz e da data no Serial Monitor
+  Serial.print("Intensidade de Luz = ");
+  Serial.println(IntensidadeLuz);
+  delay(400);
+  DateTime now = rtc.now();
+  Serial.print("Data: ");
+  Serial.print(now.day(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.year(), DEC);
+  Serial.print(" / Dia: ");
+  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  Serial.print(" / Horas: ");
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(),
